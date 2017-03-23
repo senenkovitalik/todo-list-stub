@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Todo List</title>
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div id="app-content">
+        </div>
+
+        <!--Importing all constants & utils-->
+        <script src="js/constants/localStorageConstants.js"></script>
+
+        <!--Importing all models-->
+        <script src="js/models/Task.js"></script>
+        <script src="js/models/TaskStatusEnum.js"></script>
+
+        <!--Importing all DAOs-->
+        <script src="js/dao/TaskLocalStorage.js"></script>
+
+        <!--Importing all services-->
+        <script src="js/services/TaskService.js"></script>
+
+        <!--Importing all controllers-->
+        <script src="js/controllers/TodoListController.js"></script>
+
+        <!--Importing single entry point-->
+        <script src="js/main.js"></script>
+    </body>
+</html>

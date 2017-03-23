@@ -1,0 +1,162 @@
+## AUTO-DETECT - Handle line endings automatically for files detected
+## as text and leave all files detected as binary untouched.
+## This will handle all files NOT defined below.
+* text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent=auto
+
+## SOURCE CODE
+*.bat    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.coffee text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.css    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.htm    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.html   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.inc    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.ini    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.js     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.jsx    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.json   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.less   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.php    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.pl     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.py     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.rb     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.sass   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.scm    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.scss   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.sh     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.sql    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.styl   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.ts     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.xml    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.xhtml  text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## DOCUMENTATION
+*.markdown   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.md         text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mdwn       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mdown      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mkd        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mkdn       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mdtxt      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mdtext eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.txt        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+AUTHORS      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+CHANGELOG    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+CHANGES      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+CONTRIBUTING text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+COPYING      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+INSTALL      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+license      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+LICENSE      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+NEWS         text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+readme       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*README*     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+TODO         text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## TEMPLATES
+*.dot        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.ejs        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.haml       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.handlebars text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.hbs        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.hbt        text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.jade       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.latte      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.mustache   text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.phtml      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.tmpl       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## LINTERS
+.csslintrc    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.eslintrc     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.jscsrc       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.jshintrc     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.jshintignore text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.stylelintrc  text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## CONFIGS
+*.bowerrc      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.cnf          text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.conf         text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.config       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.editorconfig  text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.gitattributes text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.gitconfig     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.gitignore     text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.htaccess      text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.npmignore    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.yaml         text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.yml          text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+Makefile       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+makefile       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## HEROKU
+Procfile       text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+.slugignore    text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+
+## GRAPHICS
+*.ai   binary
+*.bmp  binary
+*.eps  binary
+*.gif  binary
+*.ico  binary
+*.jng  binary
+*.jp2  binary
+*.jpg  binary
+*.jpeg binary
+*.jpx  binary
+*.jxr  binary
+*.pdf  binary
+*.png  binary
+*.psb  binary
+*.psd  binary
+*.svg  text eol=lf whitespace=trailing-space,space-before-tab,tab-in-indent
+*.svgz binary
+*.tif  binary
+*.tiff binary
+*.wbmp binary
+*.webp binary
+
+## AUDIO
+*.kar  binary
+*.m4a  binary
+*.mid  binary
+*.midi binary
+*.mp3  binary
+*.ogg  binary
+*.ra   binary
+
+## VIDEO
+*.3gpp binary
+*.3gp  binary
+*.as   binary
+*.asf  binary
+*.asx  binary
+*.fla  binary
+*.flv  binary
+*.m4v  binary
+*.mng  binary
+*.mov  binary
+*.mp4  binary
+*.mpeg binary
+*.mpg  binary
+*.swc  binary
+*.swf  binary
+*.webm binary
+
+## ARCHIVES
+*.7z  binary
+*.gz  binary
+*.rar binary
+*.tar binary
+*.zip binary
+
+## FONTS
+*.ttf   binary
+*.eot   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+
+## EXECUTABLES
+*.exe binary
+*.pyc binary
