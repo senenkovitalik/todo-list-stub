@@ -1,18 +1,21 @@
-var AppScope = "AppScope" in window ? window.AppScope : {};
+<<<<<<< HEAD
+var AppScope = window.AppScope ? window.AppScope : {};
+=======
+var AppScope = window.AppScope || {};
+>>>>>>> 8c7f10b5a6978438ff8cbceac5e8e992ea2db752
 
-AppScope.Task = function () {
-    this.id;
-    this.value;
-    this.status; // Enum <TaskStatus.js>
-    this.isChecked;
+AppScope.Task = function (id, value, status, isChecked) {
+    this.id = id;
+    this.value = value;
+    this.status = status; // Enum <TaskStatus.js>
+    this.isChecked = isChecked;
 };
-
 
 AppScope.Task.prototype = {
     fromJSON: function (json) {
         this.id = json.id;
         this.value = json.value;
-        this.status = TaskStatusEnum.getByCode(json.status);
+        this.status = AppScope.TaskStatusEnum.getByCode(json.status);
         this.isChecked = Boolean(json.isChecked);
 
         return this;

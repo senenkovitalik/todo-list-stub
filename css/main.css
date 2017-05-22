@@ -95,21 +95,145 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+body {
+    background-color: #DFDDF0;
+}
 
+.no-top-bottom-margin {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
+.hide {
+    display: none;
+}
 
+.navbar {
+    background-color: #027EE5;
+}
 
+.navbar-action-btn {
+    color: #fff;
+}
 
+.nav>li>a.navbar-action-btn:link, .nav>li>a.navbar-action-btn:visited {
+    color: #fff;
+    background-color: #027EE5;
+}
 
+.nav>li>a.navbar-action-btn:hover, .nav>li>a.navbar-action-btn:active {
+    color: #000;
+    background-color: #027EE5;
+}
 
+.navbar-brand {
+    color: #fff;
+}
 
+.main-title {
+    color: #fff;
+}
 
+.btn-actions {
+    color: #fff;
+    background-color: #027EE5;
+}
 
+#main-content {
+    margin-top: 50px;
+}
 
+/* List of tasks */
 
+#list {
+    margin-top: 20px;
+}
 
+.selected-item {
+    background-color: lightskyblue;
+}
 
+/* Big round button with + */
 
+#btn-add-task {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #027EE5;
+    border-radius: 50%;
+    outline: none;
+    padding: 14px 20px;
+}
+
+/* Popover */
+
+.popover {
+    border: none;
+    border-radius: 0;
+    background-color: #027EE5;
+}
+
+.popover-content {
+    color: #fff;
+    background-color: #027EE5;
+}
+
+.popover-content .list-unstyled {
+    margin-bottom: 0;
+}
+
+.popover-content .list-unstyled li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.popover-content a {
+    color: #fff;
+}
+
+.popover-content a:hover, .popover-content a:active {
+    color: #000;
+    text-decoration: none;
+}
+
+.popover > .arrow {
+    display: none;
+}
+
+/* Modal window for add new task */
+
+#modal-add-task .modal-content {
+    background-color: #027EE5;
+    border-radius: 0;
+}
+
+#modal-add-task .modal-header {
+    color: #fff;
+}
+
+#modal-add-task .modal-header .close {
+    color: #fff;
+    opacity: 0.8;
+    outline: none;
+}
+
+#modal-add-task .modal-header .close:hover {
+    color: #000;
+    text-shadow: 0 1px 0 #000;
+}
+
+#modal-add-task .modal-body {
+    background-color: #DFDDF0;
+}
+
+#modal-add-task .modal-footer {
+    color: #fff;
+}
+
+/* LIst */
+#list .well {
+    margin-bottom: 10px;
+}
 
 /* ==========================================================================
    Helper classes

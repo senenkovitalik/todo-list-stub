@@ -3,32 +3,102 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Todo List</title>
-
+        <link href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="lib/jquery-3.2.1.min.js"></script>
+        <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/no_responsive_navbar.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div id="app-content">
+<<<<<<< HEAD
+
+    <!-- Navigation bar -->
+    <div class="navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand">ToDo List</span>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="navbar-action-btn hide" id="btn-complete">
+                        <span class="glyphicon glyphicon-unchecked hide"></span>
+                        <span class="glyphicon glyphicon-check"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="navbar-action-btn" id="btn-action">
+                        <span class="glyphicon glyphicon-option-vertical"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="main-content" class="container-fluid">
+        <!-- List -->
+        <div class="row" id="list">
+            <div class="col-xs-12">
+                <ul class="list-unstyled">
+
+                </ul>
+            </div>
         </div>
 
-        <!--Importing all constants & utils-->
-        <script src="js/constants/localStorageConstants.js"></script>
+        <!-- Trigger the modal with a button -->
+        <button id="btn-add-task" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-add-task">+</button>
+        <!-- Modal -->
+        <div id="modal-add-task" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"><span class="glyphicon glyphicon-ok"></span></button>
+                        <h4 class="modal-title">New Task</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="task-description">What need to do?</label>
+                            <input type="text" class="form-control" id="task-description" placeholder="Add task description">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+=======
+        <div id="app-content">
 
-        <!--Importing all models-->
-        <script src="js/models/Task.js"></script>
-        <script src="js/models/TaskStatusEnum.js"></script>
+>>>>>>> 8c7f10b5a6978438ff8cbceac5e8e992ea2db752
+        </div>
+    </div>
 
-        <!--Importing all DAOs-->
-        <script src="js/dao/TaskLocalStorage.js"></script>
+    <!--Importing all constants & utils-->
+    <script src="js/constants/localStorageConstants.js"></script>
 
+    <!--Importing all models-->
+    <script src="js/models/Task.js"></script>
+    <script src="js/models/TaskStatusEnum.js"></script>
+
+    <!--Importing all DAOs-->
+    <script src="js/dao/TaskLocalStorage.js"></script>
+
+<<<<<<< HEAD
+    <!--Importing all services-->
+    <script src="js/services/TaskService.js"></script>
+=======
         <!--Importing all services-->
         <script src="js/services/TaskService.js"></script>
+        <script src="js/services/UID.js"></script>
+>>>>>>> 8c7f10b5a6978438ff8cbceac5e8e992ea2db752
 
-        <!--Importing all controllers-->
-        <script src="js/controllers/TodoListController.js"></script>
+    <!--Importing all controllers-->
+    <script src="js/controllers/TodoListController.js"></script>
 
-        <!--Importing single entry point-->
-        <script src="js/main.js"></script>
-    </body>
+    <!--Importing single entry point-->
+    <script src="js/main.js"></script>
+</body>
 </html>
