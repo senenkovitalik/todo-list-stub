@@ -1,20 +1,12 @@
-<<<<<<< HEAD
 var AppScope = window.AppScope ? window.AppScope : {};
-=======
-var AppScope = window.AppScope || {};
->>>>>>> 8c7f10b5a6978438ff8cbceac5e8e992ea2db752
 
 AppScope.TaskService = (function(){
 
     var storage;
 
-<<<<<<< HEAD
-    function initialize(){
-=======
     // set storage object
-    function initialize() {
->>>>>>> 8c7f10b5a6978438ff8cbceac5e8e992ea2db752
-        if (AppScope.config.storage == "serverApi") {
+    function initialize(){
+        if (AppScope.config.storage === "serverApi") {
             storage = AppScope.ServerApi;
         } else {
             storage = AppScope.TaskLocalStorage;
@@ -25,9 +17,16 @@ AppScope.TaskService = (function(){
         $("#main-content").find(".list-unstyled").append(
             $("<li><div class='well well-sm'>" +
                 "<div class='checkbox no-top-bottom-margin'>" +
-                "<label><input type='checkbox'>"+task.value+"</label>" +
+                "<label><input type='checkbox'>" + task.value + "</label>" +
                 "</div></div></li>")
         );
+    }
+
+    function getUniqueNumber(){
+        var date = new Date();
+        return date.getSeconds() * Math.pow(10, 5)
+            + date.getMilliseconds() * Math.pow(10, 3)
+            + Math.floor(Math.random() * (999 - 100)) + 100;
     }
 
     return {
