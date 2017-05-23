@@ -3,10 +3,10 @@ var AppScope = window.AppScope ? window.AppScope : {};
 AppScope.TodoListController = (function(){
 
     var TaskStatusEnum = AppScope.TaskStatusEnum;
+    var TaskService = AppScope.TaskService;
 
     var isInitialized;
-    var taskList;
-    var $container;
+    var selectMode = false;
 
     function initialize(){
         if (!isInitialized) {
@@ -19,58 +19,60 @@ AppScope.TodoListController = (function(){
         }
     }
 
-    function renderElement(){
-        return "<li>"
-    }
-
-    function renderList(){
-        return li;
-    }
-
     function renderStaticContent() {
     }
 
     function initStaticContentListeners(){
         // add new task and close modal window
         $("#modal-add-task").on("click", ".close", function(){
-            // add new task
             var taskDescription = $("#task-description").val();
             if (taskDescription) {
-                var task = new AppScope.Task(1, taskDescription, AppScope.TaskStatusEnum.ACTIVE_TASK, false);
-                // save task to LS
-                AppScope.TaskLocalStorage.saveTask(task);   // !!!!!!!!!!! need to do it from service
-                // add task to list
-                AppScope.TaskService.addTaskToList(task);
+                var content = TaskService.addTaskToList(taskDescription);
+                $("#main-content").find(".list-unstyled").append(content);
                 $("#modal-add-task").modal("hide");
             } else {
                 // show notice message
             }
         });
+
+        // select multiple elements
+        $("#list").on("click", function(e){
+            // prevent select tasks when user click beatween them
+            if($(e.target).hasClass("list-unstyled")){
+                return;
+            }
+            var div = $(e.target.closest(".well"));
+            var li = div.closest("li");
+
+            if (!div.hasClass("selected-item")) {
+                TaskService.addSelected(li);
+                selectMode = true;
+            } else {
+                TaskService.removeSelected(li);
+                if (!TaskService.getSelectedCount()) {
+                    selectMode = false;
+                }
+            }
+            div.toggleClass("selected-item");
+            showCompleteButton(selectMode);
+        });
     }
 
-    function loadUserTaskList(){
-
-    }
-
-    function onLoadTaskListSuccess(data){
-        if (!isInitialized) return;
-    }
-
-    // remove all listeners
-    function closeStaticContentListeners() {
-
-    }
-
-
-    function close(){
-        if (isInitialized) {
-            isInitialized = false;
-            closeStaticContentListeners();
+    function showCompleteButton(selectMode) {
+        var btn = $("#btn-complete");
+        if (selectMode) {
+            btn.removeClass("hide");
+        } else {
+            btn.addClass("hide");
         }
     }
 
+    function loadUserTaskList(){
+        var content = $(TaskService.getTaskListContent());
+        $("#main-content").find(".list-unstyled").append(content);
+    }
+
     return {
-        initialize: initialize,
-        close: close
+        initialize: initialize
     }
 })();
