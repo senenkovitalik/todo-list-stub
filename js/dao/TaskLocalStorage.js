@@ -46,11 +46,7 @@ AppScope.TaskLocalStorage = (function(){
     // remove one task
     function removeTask(task){
         var taskList = getAll();
-        for (var i = 0; i < taskList.length; i++) {
-            if (task.id === taskList[i].id) {
-                taskList.slice(i, 1);
-            }
-        }
+        taskList.slice(findTask(task.id), 1);
         saveAll(taskList);
     }
 
@@ -59,11 +55,30 @@ AppScope.TaskLocalStorage = (function(){
         localStorage.setItem(TASKS_KEY, []);
     }
 
+    // toggle isChecked attr
+    function toggleTaskCheck(taskId){
+        
+    }
+
+    // return task index
+    function findTask(taskId){
+        var taskList = getAll();
+        var index = null;
+        var task = new Task();
+        for (var i = 0; i < taskList.length; i++) {
+            if (taskId === task.fromJSON(taskList[i]).id) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
     return {
         getAll: getAll,
         saveAll: saveAll,
         saveTask: saveTask,
         removeTask: removeTask,
-        removeAll: removeAll
+        removeAll: removeAll,
+        toggleTaskCheck: toggleTaskCheck
     }
 })();

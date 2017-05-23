@@ -3,7 +3,7 @@ var AppScope = window.AppScope ? window.AppScope : {};
 AppScope.TaskService = (function(){
 
     var storage;
-    var selectedTasks = [];
+
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskLocalStorage = AppScope.TaskLocalStorage;
     var Task = AppScope.Task;
@@ -52,33 +52,10 @@ AppScope.TaskService = (function(){
             + Math.floor(Math.random() * (999 - 100)) + 100;
     }
 
-    function addSelected(task){
-        selectedTasks.push(task);
-    }
-
-    function removeSelected(task){
-        var index = jQuery.inArray(task, selectedTasks);
-        if (index) {
-            selectedTasks.splice(index, 1);
-        }
-    }
-
-    function getSelected(){
-        return selectedTasks;
-    }
-
-    function getSelectedCount(){
-        return selectedTasks.length;
-    }
-
     return {
         initialize: initialize,
         addTaskToList: addTaskToList,
         getUniqueNumber: getUniqueNumber,
-        getTaskListContent: getTaskListContent,
-        addSelected: addSelected,
-        removeSelected: removeSelected,
-        getSelected: getSelected,
-        getSelectedCount: getSelectedCount
+        getTaskListContent: getTaskListContent
     }
 })();

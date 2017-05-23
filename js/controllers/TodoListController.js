@@ -4,6 +4,7 @@ AppScope.TodoListController = (function(){
 
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskService = AppScope.TaskService;
+    var TaskLibrary = AppScope.TaskLibrary;
 
     var isInitialized;
     var selectMode = false;
@@ -35,7 +36,7 @@ AppScope.TodoListController = (function(){
             }
         });
 
-        // select multiple elements
+        // select one or multiple elements
         $("#list").on("click", function(e){
             // prevent select tasks when user click beatween them
             if($(e.target).hasClass("list-unstyled")){
@@ -43,18 +44,45 @@ AppScope.TodoListController = (function(){
             }
             var div = $(e.target.closest(".well"));
             var li = div.closest("li");
+            console.log(li.attr("data-task-id"));
 
             if (!div.hasClass("selected-item")) {
-                TaskService.addSelected(li);
+                TaskLibrary.addSelected(li);
+                // there we need to change task property isChecked to true
+                AppScope.TaskLocalStorage.toggleTaskCheck(li.attr("data-task-id"));
+
                 selectMode = true;
             } else {
-                TaskService.removeSelected(li);
-                if (!TaskService.getSelectedCount()) {
+                TaskLibrary.removeSelected(li);
+                // there we need to change task property isChecked to false
+                AppScope.TaskLocalStorage.toggleTaskCheck(li.attr("data-task-id"));
+
+                if (!TaskLibrary.getSelectedCount()) {
                     selectMode = false;
                 }
             }
             div.toggleClass("selected-item");
             showCompleteButton(selectMode);
+        });
+
+        // complete/uncomplete tasks
+        $("#btn-complete").click(function(e){
+            e.preventDefault();
+            jQuery.each(TaskLibrary.getSelected(), function(index, task){
+                // there we need to change task status to COMPLETED
+
+                task.fadeOut();
+            });
+            selectMode = false;
+            showCompleteButton(selectMode);
+        });
+
+        // complete task
+        $("#list").on("change", function(e){
+            // there we need to change task status to COMPLETED
+
+            var task = $(e.target).closest("li");
+            task.fadeOut();
         });
     }
 
