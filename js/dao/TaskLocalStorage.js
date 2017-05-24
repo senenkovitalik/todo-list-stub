@@ -44,10 +44,16 @@ AppScope.TaskLocalStorage = (function(){
     }
 
     // remove one task
-    function removeTask(task){
+    function removeTask(taskId){
         var taskList = getAll();
-        taskList.slice(findTask(task.id), 1);
-        saveAll(taskList);
+        var index = findTask(taskId);
+        if (index !== null) {
+            taskList.splice(index, 1);
+            saveAll(taskList);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // remove all tasks
@@ -56,17 +62,32 @@ AppScope.TaskLocalStorage = (function(){
     }
 
     // toggle isChecked attr
-    function toggleTaskCheck(taskId){
-        
+    function changeTaskAttr(taskId, attr, value){
+        var index = findTask(taskId);
+        var taskList = getAll();
+        var task = taskList[index];
+        switch (attr) {
+            case "value":
+                task.value = value;
+                break;
+            case "status":
+                task.status = value;
+                break;
+            case "isChecked":
+                task.isChecked = value;
+                break;
+            default:
+                console.log("Attr"+attr+" not found!!!");
+        }
+        saveAll(taskList);
     }
 
     // return task index
     function findTask(taskId){
         var taskList = getAll();
         var index = null;
-        var task = new Task();
         for (var i = 0; i < taskList.length; i++) {
-            if (taskId === task.fromJSON(taskList[i]).id) {
+            if (taskId == taskList[i].id) {
                 index = i;
             }
         }
@@ -79,6 +100,6 @@ AppScope.TaskLocalStorage = (function(){
         saveTask: saveTask,
         removeTask: removeTask,
         removeAll: removeAll,
-        toggleTaskCheck: toggleTaskCheck
+        changeTaskAttr: changeTaskAttr
     }
 })();

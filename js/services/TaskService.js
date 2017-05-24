@@ -3,9 +3,11 @@ var AppScope = window.AppScope ? window.AppScope : {};
 AppScope.TaskService = (function(){
 
     var storage;
+    var selectMode = false;
 
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskLocalStorage = AppScope.TaskLocalStorage;
+    var TaskLibrary = AppScope.TaskLibrary;
     var Task = AppScope.Task;
 
     // set storage object
@@ -30,8 +32,9 @@ AppScope.TaskService = (function(){
     }
 
     function addTaskToList(taskDescription){
+        var taskId = getUniqueNumber();
         var task = new Task(
-            getUniqueNumber(),
+            taskId,
             taskDescription,
             TaskStatusEnum.ACTIVE_TASK,
             false
@@ -39,10 +42,42 @@ AppScope.TaskService = (function(){
 
         TaskLocalStorage.saveTask(task);
 
-        return $("<li><div class='well well-sm'>" +
+        return $("<li data-task-id='" + taskId + "'><div class='well well-sm'>" +
             "<div class='checkbox no-top-bottom-margin'>" +
             "<label><input type='checkbox'>" + task.value + "</label>" +
             "</div></div></li>");
+    }
+
+    function provideMultiselection(div, li){
+        if (!div.hasClass("selected-item")) {
+            TaskLibrary.addSelected(li);
+            // there we need to change task property isChecked to true
+            TaskLocalStorage.changeTaskAttr(li.attr("data-task-id"), "isChecked", true);
+            selectMode = true;
+        } else {
+            TaskLibrary.removeSelected(li);
+            // there we need to change task property isChecked to false
+            TaskLocalStorage.changeTaskAttr(li.attr("data-task-id"), "isChecked", false);
+            if (!TaskLibrary.getSelectedCount()) {
+                selectMode = false;
+            }
+        }
+        div.toggleClass("selected-item");
+        return selectMode;
+    }
+
+    function completeTasks(){
+        jQuery.each(AppScope.TaskLibrary.getSelected(), function(index, task){
+            // there we need to change task status to COMPLETED
+            TaskLocalStorage.changeTaskAttr(
+                task.attr("data-task-id"),
+                "status",
+                TaskStatusEnum.COMPLETED_TASK
+            );
+            task.fadeOut();
+        });
+        selectMode = false;
+        return selectMode;
     }
 
     function getUniqueNumber(){
@@ -56,6 +91,8 @@ AppScope.TaskService = (function(){
         initialize: initialize,
         addTaskToList: addTaskToList,
         getUniqueNumber: getUniqueNumber,
-        getTaskListContent: getTaskListContent
+        getTaskListContent: getTaskListContent,
+        provideMultiselection: provideMultiselection,
+        completeTasks: completeTasks
     }
 })();

@@ -4,7 +4,6 @@ AppScope.TodoListController = (function(){
 
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskService = AppScope.TaskService;
-    var TaskLibrary = AppScope.TaskLibrary;
 
     var isInitialized;
     var selectMode = false;
@@ -44,44 +43,29 @@ AppScope.TodoListController = (function(){
             }
             var div = $(e.target.closest(".well"));
             var li = div.closest("li");
-            console.log(li.attr("data-task-id"));
 
-            if (!div.hasClass("selected-item")) {
-                TaskLibrary.addSelected(li);
-                // there we need to change task property isChecked to true
-                AppScope.TaskLocalStorage.toggleTaskCheck(li.attr("data-task-id"));
+            var toShow = TaskService.provideMultiselection(div, li);
 
-                selectMode = true;
-            } else {
-                TaskLibrary.removeSelected(li);
-                // there we need to change task property isChecked to false
-                AppScope.TaskLocalStorage.toggleTaskCheck(li.attr("data-task-id"));
-
-                if (!TaskLibrary.getSelectedCount()) {
-                    selectMode = false;
-                }
-            }
-            div.toggleClass("selected-item");
-            showCompleteButton(selectMode);
+            showCompleteButton(toShow);
         });
 
         // complete/uncomplete tasks
         $("#btn-complete").click(function(e){
             e.preventDefault();
-            jQuery.each(TaskLibrary.getSelected(), function(index, task){
-                // there we need to change task status to COMPLETED
-
-                task.fadeOut();
-            });
-            selectMode = false;
-            showCompleteButton(selectMode);
+            var toShow = TaskService.completeTasks();
+            showCompleteButton(toShow);
         });
 
         // complete task
         $("#list").on("change", function(e){
-            // there we need to change task status to COMPLETED
-
             var task = $(e.target).closest("li");
+            // there we need to change task status to COMPLETED
+            AppScope.TaskLocalStorage.changeTaskAttr(
+                task.attr("data-task-id"),
+                "status",
+                AppScope.TaskStatusEnum.COMPLETED_TASK
+            );
+
             task.fadeOut();
         });
     }
