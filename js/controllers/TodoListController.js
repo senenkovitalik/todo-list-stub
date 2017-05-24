@@ -19,7 +19,7 @@ AppScope.TodoListController = (function(){
         }
     }
 
-    function renderStaticContent() {
+    function renderStaticContent(){
     }
 
     function initStaticContentListeners(){
@@ -37,47 +37,51 @@ AppScope.TodoListController = (function(){
 
         // select one or multiple elements
         $("#list").on("click", function(e){
-            // prevent select tasks when user click beatween them
-            if($(e.target).hasClass("list-unstyled")){
+            // prevent select tasks when user click between them
+            if ($(e.target).hasClass("list-unstyled")) {
                 return;
             }
-            var div = $(e.target.closest(".well"));
-            var li = div.closest("li");
+            var taskContainer = $(e.target.closest("li"));
+            TaskService.selectTask(taskContainer);
 
-            var toShow = TaskService.provideMultiselection(div, li);
-
-            showCompleteButton(toShow);
         });
 
         // complete/uncomplete tasks
         $("#btn-complete").click(function(e){
             e.preventDefault();
-            var toShow = TaskService.completeTasks();
-            showCompleteButton(toShow);
+            TaskService.completeTasks();
         });
 
         // complete task
         $("#list").on("change", function(e){
-            var task = $(e.target).closest("li");
-            // there we need to change task status to COMPLETED
-            AppScope.TaskLocalStorage.changeTaskAttr(
-                task.attr("data-task-id"),
-                "status",
-                AppScope.TaskStatusEnum.COMPLETED_TASK
-            );
+            var taskConteiner = $(e.target).closest("li");
+            TaskService.completeTask(taskConteiner);
+        });
 
-            task.fadeOut();
+        var content = $("<ul class='list-unstyled' id='group-action-panel'>" +
+            "<li><a href='#' data-action='show-all'>Show all</a></li>" +
+            "<li><a href='#' data-action='show-active'>Show active</a></li>" +
+            "<li><a href='#' data-action='show-completed'>Show completed</a></li>" +
+            "<li><a href='#' data-action='select-all'>Select all</a></li>" +
+            "<li><a href='#' data-action='deselect-all'>Deselect all</a></li>" +
+            "<li><a href='#' data-action='remove-selected'>Remove task(s)</a></li>" +
+            "</ul>");
+
+        content.on("click", "li", function(e){
+            var action = $(e.target).attr("data-action");
+            TaskService.groupActions(action);
+        });
+
+        // show panel with group actions
+        $("#btn-action").popover({
+            content: content,
+            html: true,
+            animation: true,
+            placement: "auto left",
+            trigger: "focus, click"
         });
     }
 
-    function showCompleteButton(selectMode) {
-        var btn = $("#btn-complete");
-        if (selectMode) {
-            btn.removeClass("hide");
-        } else {
-            btn.addClass("hide");
-        }
-    }
 
     function loadUserTaskList(){
         var content = $(TaskService.getTaskListContent());

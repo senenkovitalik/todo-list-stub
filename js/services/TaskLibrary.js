@@ -6,7 +6,9 @@ AppScope.TaskLibrary = (function(){
     var completedTasks = [];
 
     function addSelected(task){
-        selectedTasks.push(task);
+        if ($.inArray(task, selectedTasks)) {
+            selectedTasks.push(task);
+        }
     }
 
     function removeSelected(task){

@@ -5,10 +5,10 @@ AppScope.TaskService = (function(){
     var storage;
     var selectMode = false;
 
+    var Task = AppScope.Task;
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskLocalStorage = AppScope.TaskLocalStorage;
     var TaskLibrary = AppScope.TaskLibrary;
-    var Task = AppScope.Task;
 
     // set storage object
     function initialize(){
@@ -48,26 +48,62 @@ AppScope.TaskService = (function(){
             "</div></div></li>");
     }
 
-    function provideMultiselection(div, li){
-        if (!div.hasClass("selected-item")) {
-            TaskLibrary.addSelected(li);
-            // there we need to change task property isChecked to true
-            TaskLocalStorage.changeTaskAttr(li.attr("data-task-id"), "isChecked", true);
+    // select/deselect
+    function selectTask(taskContainer){
+        var taskDiv = taskContainer.find(".well");
+        if (!taskDiv.hasClass("selected-item")) {
+            TaskLibrary.addSelected(taskContainer);
+            TaskLocalStorage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", true);
             selectMode = true;
         } else {
-            TaskLibrary.removeSelected(li);
-            // there we need to change task property isChecked to false
-            TaskLocalStorage.changeTaskAttr(li.attr("data-task-id"), "isChecked", false);
+            TaskLibrary.removeSelected(taskContainer);
+            TaskLocalStorage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", false);
             if (!TaskLibrary.getSelectedCount()) {
                 selectMode = false;
             }
         }
-        div.toggleClass("selected-item");
-        return selectMode;
+        taskDiv.toggleClass("selected-item");
+        showCompleteButton(selectMode);
+    }
+
+    // select all tasks
+    function selectAllTasks(){
+        var taskList = $("#list").find("li");
+        $.each(taskList, function(index, task){
+            TaskLibrary.addSelected(task);
+            var taskDiv = $(task).find(".well");
+            taskDiv.addClass("selected-item");
+        });
+        selectMode = true;
+        showCompleteButton(selectMode);
+    }
+
+    // deselect all tasks
+    function deselectAllTasks(){
+        var taskList = $("#list").find("li");
+        $.each(taskList, function(index, task){
+            TaskLibrary.removeSelected(task);
+            var taskDiv = $(task).find(".well");
+            taskDiv.removeClass("selected-item");
+        });
+        selectMode = false;
+        showCompleteButton(selectMode);
+    }
+
+    function completeTask(taskContainer){
+        var taskId = task.attr("data-task-id");
+        // there we need to change task status to COMPLETED
+        TaskLocalStorage.changeTaskAttr(
+            taskId,
+            "status",
+            TaskStatusEnum.COMPLETED_TASK
+        );
+
+        taskContainer.fadeOut();
     }
 
     function completeTasks(){
-        jQuery.each(AppScope.TaskLibrary.getSelected(), function(index, task){
+        jQuery.each(TaskLibrary.getSelected(), function(index, task){
             // there we need to change task status to COMPLETED
             TaskLocalStorage.changeTaskAttr(
                 task.attr("data-task-id"),
@@ -77,7 +113,35 @@ AppScope.TaskService = (function(){
             task.fadeOut();
         });
         selectMode = false;
-        return selectMode;
+        showCompleteButton(selectMode);
+    }
+
+    function showCompleteButton(selectMode){
+        var btn = $("#btn-complete");
+        if (selectMode) {
+            btn.removeClass("hide");
+        } else {
+            btn.addClass("hide");
+        }
+    }
+
+    function groupActions(action){
+        switch (action) {
+            case "show-all":
+                break;
+            case "show-active":
+                break;
+            case "show-completed":
+                break;
+            case "select-all":
+                selectAllTasks();
+                break;
+            case "deselect-all":
+                deselectAllTasks();
+                break;
+            case "remove-selected":
+                break;
+        }
     }
 
     function getUniqueNumber(){
@@ -92,7 +156,10 @@ AppScope.TaskService = (function(){
         addTaskToList: addTaskToList,
         getUniqueNumber: getUniqueNumber,
         getTaskListContent: getTaskListContent,
-        provideMultiselection: provideMultiselection,
-        completeTasks: completeTasks
+        selectTask: selectTask,
+        selectAllTasks: selectAllTasks,
+        completeTask: completeTask,
+        completeTasks: completeTasks,
+        groupActions: groupActions
     }
 })();
