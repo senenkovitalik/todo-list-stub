@@ -28,8 +28,7 @@ AppScope.TodoListController = (function(){
         $("#modal-add-task").on("click", ".close", function(){
             var taskDescription = $("#task-description").val();
             if (taskDescription) {
-                var content = TaskService.addTaskToList(taskDescription);
-                $("#main-content").find(".list-unstyled").append(content);
+                TaskService.addTaskToList(taskDescription);
                 $("#modal-add-task").modal("hide");
             } else {
                 // show notice message
@@ -60,14 +59,16 @@ AppScope.TodoListController = (function(){
         });
 
         // show panel with group actions
-        $("#btn-action").popover({
-            content: function(){
-                return TaskService.getPopoverContent()
-            },
-            html: true,
-            animation: true,
-            placement: "auto left",
-            trigger: "focus"
+        $("#btn-action").on("click", function(event){
+            event.preventDefault();
+            $(this).popover({
+                content: TaskService.getPopoverContent(),
+                html: true,
+                animation: true,
+                placement: "auto left",
+                trigger: "focus"
+            });
+            $(this).popover("show");
         });
     }
 
@@ -75,6 +76,7 @@ AppScope.TodoListController = (function(){
     function loadUserTaskList(){
         var content = $(TaskService.getTaskListContent());
         $("#main-content").find(".list-unstyled").append(content);
+        TaskService.useFilter();
     }
 
     return {

@@ -10,6 +10,7 @@ AppScope.TaskService = (function(){
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskLocalStorage = AppScope.TaskLocalStorage;
     var TaskLibrary = AppScope.TaskLibrary;
+    var LocationService = AppScope.LocationService;
 
     // set storage object
     function initialize(){
@@ -24,11 +25,12 @@ AppScope.TaskService = (function(){
         var content = "";
         var data = TaskLocalStorage.getAll();
         for (var i = 0; i < data.length; i++) {
-            content += "<li data-task-id='" + data[i].id + "'><div class='well well-sm'>" +
+            content += "<li data-task-id='" + data[i].id + "' data-task-status='" + data[i].status.label + "'><div class='well well-sm'>" +
                 "<div class='checkbox no-top-bottom-margin'>" +
                 "<label><input type='checkbox'>" + data[i].value + "</label>" +
                 "</div></div></li>";
         }
+        // useFilter();
         return content;
     }
 
@@ -43,10 +45,13 @@ AppScope.TaskService = (function(){
 
         TaskLocalStorage.saveTask(task);
 
-        return $("<li data-task-id='" + taskId + "'><div class='well well-sm'>" +
+        var content = $("<li data-task-id='" + taskId + "' data-task-status='" + TaskStatusEnum.ACTIVE_TASK.label + "'><div class='well well-sm'>" +
             "<div class='checkbox no-top-bottom-margin'>" +
             "<label><input type='checkbox'>" + task.value + "</label>" +
             "</div></div></li>");
+
+        $("#main-content").find(".list-unstyled").append(content);
+        useFilter();
     }
 
     // select/deselect
@@ -92,14 +97,13 @@ AppScope.TaskService = (function(){
     }
 
     function completeTask(taskContainer){
-        var taskId = task.attr("data-task-id");
-        // there we need to change task status to COMPLETED
+        var taskId = taskContainer.attr("data-task-id");
         TaskLocalStorage.changeTaskAttr(
             taskId,
             "status",
             TaskStatusEnum.COMPLETED_TASK
         );
-
+        taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
         taskContainer.fadeOut();
     }
 
@@ -129,10 +133,19 @@ AppScope.TaskService = (function(){
     function groupActions(action){
         switch (action) {
             case "show-all":
+                LocationService.setHash("filter=all");
+                useFilter("all");
+                TaskLocalStorage.saveFilter("all");
                 break;
             case "show-active":
+                LocationService.setHash("filter=active");
+                useFilter("active");
+                TaskLocalStorage.saveFilter("active");
                 break;
             case "show-completed":
+                LocationService.setHash("filter=completed");
+                useFilter("completed");
+                TaskLocalStorage.saveFilter("completed");
                 break;
             case "select-all":
                 selectAllTasks();
@@ -141,6 +154,28 @@ AppScope.TaskService = (function(){
                 deselectAllTasks();
                 break;
             case "remove-selected":
+                break;
+        }
+    }
+
+    function useFilter(filter){
+        filter = LocationService.getFilterValue();
+        var taskList = $("#list").find("li");
+        switch (filter) {
+            case "all":
+                $.each(taskList, function(i, v){
+                    $(v).show();
+                });
+                break;
+            case "active":
+            case "completed":
+                $.each(taskList, function(i, v){
+                    if ($(v).attr("data-task-status").toLowerCase() === filter){
+                        $(v).show();
+                    } else {
+                        $(v).hide();
+                    }
+                });
                 break;
         }
     }
@@ -164,9 +199,9 @@ AppScope.TaskService = (function(){
 
         var hide = "class='hide'";
 
-        showObj.showAll = hide;
-        showObj.showActive = hide;
-        showObj.showCompleted = hide;
+        showObj.showAll = "";
+        showObj.showActive = "";
+        showObj.showCompleted = "";
 
         showObj.selectAll = TaskLibrary.isAllSelected() ? hide : "";
 
@@ -176,15 +211,16 @@ AppScope.TaskService = (function(){
         }
 
         var content = $("<ul class='list-unstyled' id='group-action-panel'>" +
-            "<li class='hide'><a href='#' data-action='show-all'>Show all</a></li>" +
-            "<li class='hide'><a href='#' data-action='show-active'>Show active</a></li>" +
-            "<li class='hide'><a href='#' data-action='show-completed'>Show completed</a></li>" +
+            "<li " + showObj.showAll + "><a href='#' data-action='show-all'>Show all</a></li>" +
+            "<li " + showObj.showActive + "><a href='#' data-action='show-active'>Show active</a></li>" +
+            "<li " + showObj.showCompleted + "><a href='#' data-action='show-completed'>Show completed</a></li>" +
             "<li " + showObj.selectAll + "><a href='#' data-action='select-all'>Select all</a></li>" +
             "<li " + showObj.deselectAll + "><a href='#' data-action='deselect-all'>Deselect all</a></li>" +
             "<li " + showObj.removeSelected + "><a href='#' data-action='remove-selected'>Remove task(s)</a></li>" +
             "</ul>");
 
         content.on("click", "li", function(e){
+            e.preventDefault();
             var action = $(e.target).attr("data-action");
             groupActions(action);
         });
@@ -202,6 +238,7 @@ AppScope.TaskService = (function(){
         selectAllTasks: selectAllTasks,
         completeTask: completeTask,
         completeTasks: completeTasks,
-        groupActions: groupActions
+        groupActions: groupActions,
+        useFilter: useFilter
     }
 })();

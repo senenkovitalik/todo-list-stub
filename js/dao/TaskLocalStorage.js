@@ -4,6 +4,7 @@ var AppScope = window.AppScope ? window.AppScope : {};
 AppScope.TaskLocalStorage = (function(){
 
     var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST;
+    var FILTER = AppScope.localStorageConstants.FILTER;
     var Task = AppScope.Task;
     var TaskLibrary = AppScope.TaskLibrary;
 
@@ -98,12 +99,22 @@ AppScope.TaskLocalStorage = (function(){
         return index;
     }
 
+    function getFilter(){
+        return localStorage.getItem(FILTER);
+    }
+
+    function saveFilter(filter){
+        localStorage.setItem(FILTER, filter);
+    }
+
     return {
         getAll: getAll,
         saveAll: saveAll,
         saveTask: saveTask,
         removeTask: removeTask,
         removeAll: removeAll,
-        changeTaskAttr: changeTaskAttr
+        changeTaskAttr: changeTaskAttr,
+        getFilter: getFilter,
+        saveFilter: saveFilter
     }
 })();
