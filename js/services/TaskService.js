@@ -1,3 +1,4 @@
+"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.TaskService = (function(){
@@ -151,10 +152,51 @@ AppScope.TaskService = (function(){
             + Math.floor(Math.random() * (999 - 100)) + 100;
     }
 
+    function getPopoverContent(){
+        var showObj = {
+            showAll: "",
+            showActive: "",
+            showCompleted: "",
+            selectAll: "",
+            deselectAll: "",
+            removeSelected: ""
+        };
+
+        var hide = "class='hide'";
+
+        showObj.showAll = hide;
+        showObj.showActive = hide;
+        showObj.showCompleted = hide;
+
+        showObj.selectAll = TaskLibrary.isAllSelected() ? hide : "";
+
+        if (!selectMode) {
+            showObj.deselectAll = hide;
+            showObj.removeSelected = hide;
+        }
+
+        var content = $("<ul class='list-unstyled' id='group-action-panel'>" +
+            "<li class='hide'><a href='#' data-action='show-all'>Show all</a></li>" +
+            "<li class='hide'><a href='#' data-action='show-active'>Show active</a></li>" +
+            "<li class='hide'><a href='#' data-action='show-completed'>Show completed</a></li>" +
+            "<li " + showObj.selectAll + "><a href='#' data-action='select-all'>Select all</a></li>" +
+            "<li " + showObj.deselectAll + "><a href='#' data-action='deselect-all'>Deselect all</a></li>" +
+            "<li " + showObj.removeSelected + "><a href='#' data-action='remove-selected'>Remove task(s)</a></li>" +
+            "</ul>");
+
+        content.on("click", "li", function(e){
+            var action = $(e.target).attr("data-action");
+            groupActions(action);
+        });
+
+        return content;
+    }
+
     return {
         initialize: initialize,
         addTaskToList: addTaskToList,
         getUniqueNumber: getUniqueNumber,
+        getPopoverContent: getPopoverContent,
         getTaskListContent: getTaskListContent,
         selectTask: selectTask,
         selectAllTasks: selectAllTasks,

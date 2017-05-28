@@ -1,3 +1,4 @@
+"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.TodoListController = (function(){
@@ -54,31 +55,19 @@ AppScope.TodoListController = (function(){
 
         // complete task
         $("#list").on("change", function(e){
-            var taskConteiner = $(e.target).closest("li");
-            TaskService.completeTask(taskConteiner);
-        });
-
-        var content = $("<ul class='list-unstyled' id='group-action-panel'>" +
-            "<li><a href='#' data-action='show-all'>Show all</a></li>" +
-            "<li><a href='#' data-action='show-active'>Show active</a></li>" +
-            "<li><a href='#' data-action='show-completed'>Show completed</a></li>" +
-            "<li><a href='#' data-action='select-all'>Select all</a></li>" +
-            "<li><a href='#' data-action='deselect-all'>Deselect all</a></li>" +
-            "<li><a href='#' data-action='remove-selected'>Remove task(s)</a></li>" +
-            "</ul>");
-
-        content.on("click", "li", function(e){
-            var action = $(e.target).attr("data-action");
-            TaskService.groupActions(action);
+            var taskContainer = $(e.target).closest("li");
+            TaskService.completeTask(taskContainer);
         });
 
         // show panel with group actions
         $("#btn-action").popover({
-            content: content,
+            content: function(){
+                return TaskService.getPopoverContent()
+            },
             html: true,
             animation: true,
             placement: "auto left",
-            trigger: "focus, click"
+            trigger: "focus"
         });
     }
 

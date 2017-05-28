@@ -1,9 +1,11 @@
+"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.TaskLocalStorage = (function(){
 
     var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST;
     var Task = AppScope.Task;
+    var TaskLibrary = AppScope.TaskLibrary;
 
     // get all tasks
     function getAll(){
@@ -20,6 +22,7 @@ AppScope.TaskLocalStorage = (function(){
                 var taskObj = task.fromJSON(taskList[i]);
                 list.push(taskObj);
             }
+            TaskLibrary.setTasksCount(list.length);
 
             return list;
         } catch (e) {
@@ -34,6 +37,7 @@ AppScope.TaskLocalStorage = (function(){
             arr.push(taskList[i].toJSON());
         }
         localStorage.setItem(TASKS_KEY, JSON.stringify(arr));
+        TaskLibrary.setTasksCount(arr.length);
     }
 
     // save one task
