@@ -104,18 +104,19 @@ AppScope.TaskService = (function(){
             TaskStatusEnum.COMPLETED_TASK
         );
         taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
-        taskContainer.fadeOut();
+        useFilter();
     }
 
     function completeTasks(){
-        $.each(TaskLibrary.getSelected(), function(index, task){
+        $.each(TaskLibrary.getSelected(), function(index, taskContainer){
             TaskLocalStorage.changeTaskAttr(
-                task.attr("data-task-id"),
+                taskContainer.attr("data-task-id"),
                 "status",
                 TaskStatusEnum.COMPLETED_TASK
             );
-            task.fadeOut();
+            taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
         });
+        useFilter();
         selectMode = false;
         showCompleteButton(selectMode);
     }
