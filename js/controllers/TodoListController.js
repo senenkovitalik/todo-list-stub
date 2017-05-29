@@ -59,10 +59,12 @@ AppScope.TodoListController = (function(){
         });
 
         // show panel with group actions
-        $("#btn-action").on("click", function(event){
+        $('[data-toggle="popover"]').on("click", function(event){
             event.preventDefault();
             $(this).popover({
-                content: TaskService.getPopoverContent(),
+                content: function(){
+                    return TaskService.getPopoverContent()
+                },
                 html: true,
                 animation: true,
                 placement: "auto left",

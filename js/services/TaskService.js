@@ -170,7 +170,7 @@ AppScope.TaskService = (function(){
             case "active":
             case "completed":
                 $.each(taskList, function(i, v){
-                    if ($(v).attr("data-task-status").toLowerCase() === filter){
+                    if ($(v).attr("data-task-status").toLowerCase() === filter) {
                         $(v).show();
                     } else {
                         $(v).hide();
@@ -187,6 +187,8 @@ AppScope.TaskService = (function(){
             + Math.floor(Math.random() * (999 - 100)) + 100;
     }
 
+    // produce content for popover window ('More'/'Actions' menu)
+    // decide what items will be shown
     function getPopoverContent(){
         var showObj = {
             showAll: "",
@@ -199,12 +201,20 @@ AppScope.TaskService = (function(){
 
         var hide = "class='hide'";
 
-        showObj.showAll = "";
-        showObj.showActive = "";
-        showObj.showCompleted = "";
+        switch (LocationService.getFilterValue()) {
+            case "all":
+                showObj.showAll = hide;
+                break;
+            case "active":
+                showObj.showActive = hide;
+                break;
+            case "completed":
+                showObj.showCompleted = hide;
+                break;
+        }
 
         showObj.selectAll = TaskLibrary.isAllSelected() ? hide : "";
-
+        
         if (!selectMode) {
             showObj.deselectAll = hide;
             showObj.removeSelected = hide;
