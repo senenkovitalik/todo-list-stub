@@ -108,8 +108,7 @@ AppScope.TaskService = (function(){
     }
 
     function completeTasks(){
-        jQuery.each(TaskLibrary.getSelected(), function(index, task){
-            // there we need to change task status to COMPLETED
+        $.each(TaskLibrary.getSelected(), function(index, task){
             TaskLocalStorage.changeTaskAttr(
                 task.attr("data-task-id"),
                 "status",
@@ -117,6 +116,17 @@ AppScope.TaskService = (function(){
             );
             task.fadeOut();
         });
+        selectMode = false;
+        showCompleteButton(selectMode);
+    }
+
+    // Remove selected tasks
+    function removeTasks(){
+        $.each(TaskLibrary.getSelected(), function(index, taskContainer){
+            TaskLocalStorage.removeTask(taskContainer.attr("data-task-id"));
+            taskContainer.fadeOut();
+        });
+        TaskLibrary.clearSelected();
         selectMode = false;
         showCompleteButton(selectMode);
     }
@@ -130,6 +140,7 @@ AppScope.TaskService = (function(){
         }
     }
 
+    // Execute appropriate functions for filtering and selecting
     function groupActions(action){
         switch (action) {
             case "show-all":
@@ -154,6 +165,7 @@ AppScope.TaskService = (function(){
                 deselectAllTasks();
                 break;
             case "remove-selected":
+                removeTasks();
                 break;
         }
     }
@@ -187,8 +199,10 @@ AppScope.TaskService = (function(){
             + Math.floor(Math.random() * (999 - 100)) + 100;
     }
 
-    // produce content for popover window ('More'/'Actions' menu)
-    // decide what items will be shown
+    /*
+     produce content for popover window ('More'/'Actions' menu)
+     decide what items will be shown
+     */
     function getPopoverContent(){
         var showObj = {
             showAll: "",
@@ -214,7 +228,7 @@ AppScope.TaskService = (function(){
         }
 
         showObj.selectAll = TaskLibrary.isAllSelected() ? hide : "";
-        
+
         if (!selectMode) {
             showObj.deselectAll = hide;
             showObj.removeSelected = hide;

@@ -55,9 +55,6 @@ AppScope.TaskLocalStorage = (function(){
         if (index !== null) {
             taskList.splice(index, 1);
             saveAll(taskList);
-            return true;
-        } else {
-            return false;
         }
     }
 

@@ -13,10 +13,14 @@ AppScope.TaskLibrary = (function(){
     }
 
     function removeSelected(task){
-        var index = jQuery.inArray(task, selectedTasks);
+        var index = $.inArray(task, selectedTasks);
         if (index) {
             selectedTasks.splice(index, 1);
         }
+    }
+
+    function clearSelected(){
+        selectedTasks = [];
     }
 
     function getSelected(){
@@ -38,6 +42,7 @@ AppScope.TaskLibrary = (function(){
     return {
         addSelected: addSelected,
         removeSelected: removeSelected,
+        clearSelected: clearSelected,
         getSelected: getSelected,
         getSelectedCount: getSelectedCount,
         setTasksCount: setTasksCount,
