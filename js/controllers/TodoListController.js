@@ -5,6 +5,8 @@ AppScope.TodoListController = (function(){
 
     var TaskStatusEnum = AppScope.TaskStatusEnum;
     var TaskService = AppScope.TaskService;
+    var LocationService = AppScope.LocationService;
+    var TaskLocalStorage = AppScope.TaskLocalStorage;
 
     var isInitialized;
     var selectMode = false;
@@ -79,10 +81,12 @@ AppScope.TodoListController = (function(){
         });
     }
 
-
     function loadUserTaskList(){
-        var content = $(TaskService.getTaskListContent());
-        $("#main-content").find(".list-unstyled").append(content);
+        $("#main-content")
+            .find(".list-unstyled")
+            .append($(TaskService.getTaskListContent()));
+
+        LocationService.setHash("filter="+TaskLocalStorage.getFilter());
         TaskService.useFilter();
     }
 
