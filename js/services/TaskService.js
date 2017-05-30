@@ -76,9 +76,11 @@ AppScope.TaskService = (function(){
     function selectAllTasks(){
         var taskList = $("#list").find("li");
         $.each(taskList, function(index, task){
-            TaskLibrary.addSelected(task);
-            var taskDiv = $(task).find(".well");
-            taskDiv.addClass("selected-item");
+            if ($(task).attr("style") !== "display: none") {
+                TaskLibrary.addSelected(task);
+                var taskDiv = $(task).find(".well");
+                taskDiv.addClass("selected-item");
+            }
         });
         selectMode = true;
         showCompleteButton();
@@ -89,10 +91,10 @@ AppScope.TaskService = (function(){
     function deselectAllTasks(){
         var taskList = $("#list").find("li");
         $.each(taskList, function(index, task){
-            TaskLibrary.removeSelected(task);
             var taskDiv = $(task).find(".well");
             taskDiv.removeClass("selected-item");
         });
+        TaskLibrary.clearSelected();
         selectMode = false;
         showCompleteButton();
         showUncompleteButton();
@@ -112,11 +114,11 @@ AppScope.TaskService = (function(){
     function completeTasks(){
         $.each(TaskLibrary.getSelected(), function(index, taskContainer){
             storage.changeTaskAttr(
-                taskContainer.attr("data-task-id"),
+                $(taskContainer).attr("data-task-id"),
                 "status",
                 TaskStatusEnum.COMPLETED_TASK
             );
-            taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
+            $(taskContainer).attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
         });
         useFilter();
     }
@@ -124,11 +126,11 @@ AppScope.TaskService = (function(){
     function uncompleteTasks(){
         $.each(TaskLibrary.getSelected(), function(index, taskContainer){
             storage.changeTaskAttr(
-                taskContainer.attr("data-task-id"),
+                $(taskContainer).attr("data-task-id"),
                 "status",
                 TaskStatusEnum.ACTIVE_TASK
             );
-            taskContainer.attr("data-task-status", TaskStatusEnum.ACTIVE_TASK.label);
+            $(taskContainer).attr("data-task-status", TaskStatusEnum.ACTIVE_TASK.label);
         });
         useFilter();
     }
@@ -156,7 +158,7 @@ AppScope.TaskService = (function(){
 
     function showUncompleteButton(){
         var btn = $('#btn-uncomplete');
-        if (LocationService.getFilterValue() === "completed" && selectMode){
+        if (LocationService.getFilterValue() === "completed" && selectMode) {
             btn.removeClass("hide");
         } else {
             btn.addClass("hide");
