@@ -23,14 +23,13 @@ AppScope.TaskService = (function(){
 
     function getTaskListContent(){
         var content = "";
-        var data = TaskLocalStorage.getAll();
+        var data = storage.getAll();
         for (var i = 0; i < data.length; i++) {
             content += "<li data-task-id='" + data[i].id + "' data-task-status='" + data[i].status.label + "'><div class='well well-sm'>" +
                 "<div class='checkbox no-top-bottom-margin'>" +
                 "<label><input type='checkbox'>" + data[i].value + "</label>" +
                 "</div></div></li>";
         }
-        // useFilter();
         return content;
     }
 
@@ -43,7 +42,7 @@ AppScope.TaskService = (function(){
             false
         );
 
-        TaskLocalStorage.saveTask(task);
+        storage.saveTask(task);
 
         var content = $("<li data-task-id='" + taskId + "' data-task-status='" + TaskStatusEnum.ACTIVE_TASK.label + "'><div class='well well-sm'>" +
             "<div class='checkbox no-top-bottom-margin'>" +
@@ -59,17 +58,18 @@ AppScope.TaskService = (function(){
         var taskDiv = taskContainer.find(".well");
         if (!taskDiv.hasClass("selected-item")) {
             TaskLibrary.addSelected(taskContainer);
-            TaskLocalStorage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", true);
+            storage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", true);
             selectMode = true;
         } else {
             TaskLibrary.removeSelected(taskContainer);
-            TaskLocalStorage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", false);
+            storage.changeTaskAttr(taskContainer.attr("data-task-id"), "isChecked", false);
             if (!TaskLibrary.getSelectedCount()) {
                 selectMode = false;
             }
         }
         taskDiv.toggleClass("selected-item");
-        showCompleteButton(selectMode);
+        showCompleteButton();
+        showUncompleteButton();
     }
 
     // select all tasks
@@ -81,7 +81,8 @@ AppScope.TaskService = (function(){
             taskDiv.addClass("selected-item");
         });
         selectMode = true;
-        showCompleteButton(selectMode);
+        showCompleteButton();
+        showUncompleteButton();
     }
 
     // deselect all tasks
@@ -93,12 +94,13 @@ AppScope.TaskService = (function(){
             taskDiv.removeClass("selected-item");
         });
         selectMode = false;
-        showCompleteButton(selectMode);
+        showCompleteButton();
+        showUncompleteButton();
     }
 
     function completeTask(taskContainer){
         var taskId = taskContainer.attr("data-task-id");
-        TaskLocalStorage.changeTaskAttr(
+        storage.changeTaskAttr(
             taskId,
             "status",
             TaskStatusEnum.COMPLETED_TASK
@@ -109,7 +111,7 @@ AppScope.TaskService = (function(){
 
     function completeTasks(){
         $.each(TaskLibrary.getSelected(), function(index, taskContainer){
-            TaskLocalStorage.changeTaskAttr(
+            storage.changeTaskAttr(
                 taskContainer.attr("data-task-id"),
                 "status",
                 TaskStatusEnum.COMPLETED_TASK
@@ -117,24 +119,44 @@ AppScope.TaskService = (function(){
             taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
         });
         useFilter();
-        selectMode = false;
-        showCompleteButton(selectMode);
+    }
+
+    function uncompleteTasks(){
+        $.each(TaskLibrary.getSelected(), function(index, taskContainer){
+            storage.changeTaskAttr(
+                taskContainer.attr("data-task-id"),
+                "status",
+                TaskStatusEnum.ACTIVE_TASK
+            );
+            taskContainer.attr("data-task-status", TaskStatusEnum.ACTIVE_TASK.label);
+        });
+        useFilter();
     }
 
     // Remove selected tasks
     function removeTasks(){
         $.each(TaskLibrary.getSelected(), function(index, taskContainer){
-            TaskLocalStorage.removeTask(taskContainer.attr("data-task-id"));
+            storage.removeTask(taskContainer.attr("data-task-id"));
             taskContainer.fadeOut();
         });
         TaskLibrary.clearSelected();
         selectMode = false;
-        showCompleteButton(selectMode);
+        showCompleteButton();
+        showUncompleteButton();
     }
 
-    function showCompleteButton(selectMode){
+    function showCompleteButton(){
         var btn = $("#btn-complete");
-        if (selectMode) {
+        if (LocationService.getFilterValue() !== "completed" && selectMode) {
+            btn.removeClass("hide");
+        } else {
+            btn.addClass("hide");
+        }
+    }
+
+    function showUncompleteButton(){
+        var btn = $('#btn-uncomplete');
+        if (LocationService.getFilterValue() === "completed" && selectMode){
             btn.removeClass("hide");
         } else {
             btn.addClass("hide");
@@ -144,20 +166,20 @@ AppScope.TaskService = (function(){
     // Execute appropriate functions for filtering and selecting
     function groupActions(action){
         switch (action) {
-            case "show-all":
-                LocationService.setHash("filter=all");
-                useFilter("all");
-                TaskLocalStorage.saveFilter("all");
-                break;
+            // case "show-all":
+            //     LocationService.setHash("filter=all");
+            //     useFilter("all");
+            //     storage.saveFilter("all");
+            //     break;
             case "show-active":
                 LocationService.setHash("filter=active");
                 useFilter("active");
-                TaskLocalStorage.saveFilter("active");
+                storage.saveFilter("active");
                 break;
             case "show-completed":
                 LocationService.setHash("filter=completed");
                 useFilter("completed");
-                TaskLocalStorage.saveFilter("completed");
+                storage.saveFilter("completed");
                 break;
             case "select-all":
                 selectAllTasks();
@@ -175,11 +197,11 @@ AppScope.TaskService = (function(){
         filter = LocationService.getFilterValue();
         var taskList = $("#list").find("li");
         switch (filter) {
-            case "all":
-                $.each(taskList, function(i, v){
-                    $(v).show();
-                });
-                break;
+            // case "all":
+            //     $.each(taskList, function(i, v){
+            //         $(v).show();
+            //     });
+            //     break;
             case "active":
             case "completed":
                 $.each(taskList, function(i, v){
@@ -191,6 +213,7 @@ AppScope.TaskService = (function(){
                 });
                 break;
         }
+        deselectAllTasks();
     }
 
     function getUniqueNumber(){
@@ -206,7 +229,7 @@ AppScope.TaskService = (function(){
      */
     function getPopoverContent(){
         var showObj = {
-            showAll: "",
+            // showAll: "",
             showActive: "",
             showCompleted: "",
             selectAll: "",
@@ -217,9 +240,9 @@ AppScope.TaskService = (function(){
         var hide = "class='hide'";
 
         switch (LocationService.getFilterValue()) {
-            case "all":
-                showObj.showAll = hide;
-                break;
+            // case "all":
+            //     showObj.showAll = hide;
+            //     break;
             case "active":
                 showObj.showActive = hide;
                 break;
@@ -236,7 +259,7 @@ AppScope.TaskService = (function(){
         }
 
         var content = $("<ul class='list-unstyled' id='group-action-panel'>" +
-            "<li " + showObj.showAll + "><a href='#' data-action='show-all'>Show all</a></li>" +
+            // "<li " + showObj.showAll + "><a href='#' data-action='show-all'>Show all</a></li>" +
             "<li " + showObj.showActive + "><a href='#' data-action='show-active'>Show active</a></li>" +
             "<li " + showObj.showCompleted + "><a href='#' data-action='show-completed'>Show completed</a></li>" +
             "<li " + showObj.selectAll + "><a href='#' data-action='select-all'>Select all</a></li>" +
@@ -263,6 +286,7 @@ AppScope.TaskService = (function(){
         selectAllTasks: selectAllTasks,
         completeTask: completeTask,
         completeTasks: completeTasks,
+        uncompleteTasks: uncompleteTasks,
         groupActions: groupActions,
         useFilter: useFilter
     }

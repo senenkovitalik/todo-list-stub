@@ -43,13 +43,18 @@ AppScope.TodoListController = (function(){
             }
             var taskContainer = $(e.target.closest("li"));
             TaskService.selectTask(taskContainer);
-
         });
 
-        // complete/uncomplete tasks
+        // complete tasks
         $("#btn-complete").click(function(e){
             e.preventDefault();
             TaskService.completeTasks();
+        });
+
+        // uncomplete tasks
+        $("#btn-uncomplete").click(function(e){
+            e.preventDefault();
+            TaskService.uncompleteTasks();
         });
 
         // complete task
