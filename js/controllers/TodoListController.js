@@ -26,6 +26,16 @@ AppScope.TodoListController = (function(){
     }
 
     function initStaticContentListeners(){
+        // add autofocus to modal window input field
+        $("#modal-add-task").on("shown.bs.modal", function(event){
+            $('#task-description').focus();
+        });
+
+        // clear modal window autofocus
+        $("#modal-add-task").on("show.bs.modal", function(){
+            $('#task-description').val("");
+        });
+
         // add new task and close modal window
         $("#modal-add-task").on("click", ".close", function(){
             var taskDescription = $("#task-description").val();
