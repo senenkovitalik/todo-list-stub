@@ -31,9 +31,18 @@ AppScope.TodoListController = (function(){
             $('#task-description').focus();
         });
 
-        // clear modal window autofocus
+        // clear modal window
         $("#modal-add-task").on("show.bs.modal", function(){
             $('#task-description').val("");
+        });
+
+        // make normal input field after error
+        $('#task-description').on("focus", function(){
+            var formGroup = $(this).parent();
+            if (formGroup.hasClass("has-error")){
+                formGroup.removeClass("has-error has-feedback");
+                formGroup.find("span").remove();
+            }
         });
 
         // add new task and close modal window
@@ -43,7 +52,10 @@ AppScope.TodoListController = (function(){
                 TaskService.addTaskToList(taskDescription);
                 $("#modal-add-task").modal("hide");
             } else {
-                // show notice message
+                // make input field red to show error input
+                var formGroup = $("#modal-add-task").find(".form-group");
+                formGroup.addClass("has-error has-feedback");
+                formGroup.append($("<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>"));
             }
         });
 
