@@ -24,9 +24,5 @@ AppScope.Task.prototype = {
             status: this.status.code,
             isChecked: this.isChecked
         }
-    },
-
-    toString: function () {
-        return JSON.stringify(this.toJSON());
     }
 };

@@ -1,15 +1,17 @@
-"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.LocationService = (function(){
+    // set URL hash value
     function setHash(value){
         location.hash = value;
     }
 
+    // get URL hash value
     function getHash(){
         return location.hash;
     }
 
+    // get filter value from URL hash
     function getFilterValue(){
         return getHash().substring(8);
     }

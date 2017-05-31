@@ -1,12 +1,11 @@
-"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.TaskLocalStorage = (function(){
 
-    var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST;
-    var FILTER = AppScope.localStorageConstants.FILTER;
-    var Task = AppScope.Task;
-    var TaskLibrary = AppScope.TaskLibrary;
+    var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST,
+        FILTER = AppScope.localStorageConstants.FILTER,
+        Task = AppScope.Task,
+        TaskLibrary = AppScope.TaskLibrary;
 
     // get all tasks
     function getAll(){
@@ -19,8 +18,7 @@ AppScope.TaskLocalStorage = (function(){
             taskList = Array.isArray(taskList) ? taskList : [taskList];
 
             for (var i = 0; i < taskList.length; i++) {
-                var task = new Task();
-                var taskObj = task.fromJSON(taskList[i]);
+                var taskObj = new Task().fromJSON(taskList[i]);
                 list.push(taskObj);
             }
             TaskLibrary.setTasksCount(list.length);
@@ -34,21 +32,21 @@ AppScope.TaskLocalStorage = (function(){
     // save all tasks
     function saveAll(taskList){
         var arr = [];
-        for (var i = 0; i < taskList.length; i++) {
-            arr.push(taskList[i].toJSON());
-        }
+        $.each(taskList, function(i, task){
+            arr.push(task.toJSON());
+        });
         localStorage.setItem(TASKS_KEY, JSON.stringify(arr));
         TaskLibrary.setTasksCount(arr.length);
     }
 
-    // save one task
+    // save task
     function saveTask(task){
         var taskList = getAll();
         taskList.push(task);
         saveAll(taskList);
     }
 
-    // remove one task
+    // remove task
     function removeTask(taskId){
         var taskList = getAll();
         var index = findTask(taskId);
@@ -63,7 +61,7 @@ AppScope.TaskLocalStorage = (function(){
         localStorage.setItem(TASKS_KEY, []);
     }
 
-    // toggle isChecked attr
+    // change task attr
     function changeTaskAttr(taskId, attr, value){
         var index = findTask(taskId);
         var taskList = getAll();
@@ -87,19 +85,20 @@ AppScope.TaskLocalStorage = (function(){
     // return task index
     function findTask(taskId){
         var taskList = getAll();
-        var index = null;
         for (var i = 0; i < taskList.length; i++) {
             if (taskId == taskList[i].id) {
-                index = i;
+                return i;
             }
         }
-        return index;
+        return null;
     }
 
+    // get filter value from LS
     function getFilter(){
         return localStorage.getItem(FILTER);
     }
 
+    // save filter value to LS
     function saveFilter(filter){
         localStorage.setItem(FILTER, filter);
     }

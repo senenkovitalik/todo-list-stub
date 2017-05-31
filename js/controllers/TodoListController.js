@@ -1,4 +1,3 @@
-"use strict";
 var AppScope = window.AppScope ? window.AppScope : {};
 
 AppScope.TodoListController = (function(){
@@ -9,20 +8,15 @@ AppScope.TodoListController = (function(){
     var TaskLocalStorage = AppScope.TaskLocalStorage;
 
     var isInitialized;
-    var selectMode = false;
 
     function initialize(){
         if (!isInitialized) {
             isInitialized = true;
-            renderStaticContent();
             initStaticContentListeners();
             loadUserTaskList();
         } else {
             loadUserTaskList();
         }
-    }
-
-    function renderStaticContent(){
     }
 
     function initStaticContentListeners(){
@@ -50,6 +44,7 @@ AppScope.TodoListController = (function(){
             addNewTask();
         });
 
+        // add new task by pressing Enter
         $('#task-description').on("keypress", function(e){
             if(e.which == 13) {
                 addNewTask();
@@ -59,8 +54,10 @@ AppScope.TodoListController = (function(){
         function addNewTask(){
             var taskDescription = $("#task-description").val();
             if (taskDescription) {
-                TaskService.addTaskToList(taskDescription);
+                var content = TaskService.addTaskToList(taskDescription);
+                $("#main-content").find(".list-unstyled").append($(content));
                 $("#modal-add-task").modal("hide");
+                TaskService.useFilter();
             } else {
                 // make input field red to show error input
                 var formGroup = $("#modal-add-task").find(".form-group");
