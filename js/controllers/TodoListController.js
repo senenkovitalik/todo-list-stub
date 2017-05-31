@@ -37,7 +37,7 @@ AppScope.TodoListController = (function(){
         });
 
         // make normal input field after error
-        $('#task-description').on("focus", function(){
+        $('#task-description').on("focus input", function(){
             var formGroup = $(this).parent();
             if (formGroup.hasClass("has-error")){
                 formGroup.removeClass("has-error has-feedback");
@@ -47,6 +47,16 @@ AppScope.TodoListController = (function(){
 
         // add new task and close modal window
         $("#modal-add-task").on("click", ".close", function(){
+            addNewTask();
+        });
+
+        $('#task-description').on("keypress", function(e){
+            if(e.which == 13) {
+                addNewTask();
+            }
+        });
+
+        function addNewTask(){
             var taskDescription = $("#task-description").val();
             if (taskDescription) {
                 TaskService.addTaskToList(taskDescription);
@@ -57,7 +67,7 @@ AppScope.TodoListController = (function(){
                 formGroup.addClass("has-error has-feedback");
                 formGroup.append($("<span class=\"glyphicon glyphicon-remove form-control-feedback\"></span>"));
             }
-        });
+        }
 
         // select one or multiple elements
         $("#list").on("click", function(e){
