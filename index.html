@@ -14,64 +14,6 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <!-- Navigation bar -->
-    <div class="navbar navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <span class="navbar-brand">ToDo List</span>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" class="navbar-action-btn hide" id="btn-uncomplete">
-                        <span class="glyphicon glyphicon-unchecked"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="navbar-action-btn hide" id="btn-complete">
-                        <span class="glyphicon glyphicon-check"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="navbar-action-btn" id="btn-action" data-toggle="popover">
-                        <span class="glyphicon glyphicon-option-vertical"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="main-content" class="container-fluid">
-        <!-- List -->
-        <div class="row" id="list">
-            <div class="col-xs-12 col-md-8 col-md-offset-2">
-                <ul class="list-unstyled"></ul>
-            </div>
-        </div>
-
-        <!-- Trigger the modal with a button -->
-        <button id="btn-add-task" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-add-task">+</button>
-        <!-- Modal -->
-        <div id="modal-add-task" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close"><span class="glyphicon glyphicon-ok"></span></button>
-                        <h4 class="modal-title">New Task</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="task-description">What need to do?</label>
-                            <input type="text" class="form-control" id="task-description" placeholder="Add task description">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!--Importing all constants & utils-->
     <script src="js/constants/localStorageConstants.js"></script>

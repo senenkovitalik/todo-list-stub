@@ -1,15 +1,15 @@
-var AppScope = window.AppScope ? window.AppScope : {};
+var AppScope = window.AppScope || {};
 
 AppScope.TaskService = (function(){
 
     var storage;
     var selectMode = false;
 
-    var Task = AppScope.Task,
-        TaskStatusEnum = AppScope.TaskStatusEnum,
-        TaskLibrary = AppScope.TaskLibrary,
-        TaskLocalStorage = AppScope.TaskLocalStorage,
-        LocationService = AppScope.LocationService;
+    var Task = AppScope.Task;
+    var TaskStatusEnum = AppScope.TaskStatusEnum;
+    var TaskLibrary = AppScope.TaskLibrary;
+    var TaskLocalStorage = AppScope.TaskLocalStorage;
+    var LocationService = AppScope.LocationService;
 
     // set storage object
     function initialize(){
@@ -156,7 +156,7 @@ AppScope.TaskService = (function(){
             btnComplete.addClass("hide");
         }
 
-        var btnDecomplete = $('#btn-uncomplete');
+        var btnDecomplete = $("#btn-uncomplete");
         if (LocationService.getFilterValue() === "completed" && selectMode) {
             btnDecomplete.removeClass("hide");
         } else {

@@ -1,4 +1,4 @@
-var AppScope = window.AppScope ? window.AppScope : {};
+var AppScope = window.AppScope || {};
 
 AppScope.TaskStatusEnum = (function () {
     var TaskStatus = function (code, label) {

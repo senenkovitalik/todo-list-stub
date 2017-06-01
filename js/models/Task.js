@@ -1,4 +1,4 @@
-var AppScope = window.AppScope ? window.AppScope : {};
+var AppScope = window.AppScope || {};
 
 AppScope.Task = function (id, value, status, isChecked) {
     this.id = id;

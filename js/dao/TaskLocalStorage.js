@@ -1,26 +1,25 @@
-var AppScope = window.AppScope ? window.AppScope : {};
+var AppScope = window.AppScope || {};
 
 AppScope.TaskLocalStorage = (function(){
 
-    var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST,
-        FILTER = AppScope.localStorageConstants.FILTER,
-        Task = AppScope.Task,
-        TaskLibrary = AppScope.TaskLibrary;
+    var TASKS_KEY = AppScope.localStorageConstants.TASK_LIST;
+    var FILTER = AppScope.localStorageConstants.FILTER;
+    var Task = AppScope.Task;
+    var TaskLibrary = AppScope.TaskLibrary;
 
     // get all tasks
     function getAll(){
         try {
-            var taskListStringified = localStorage.getItem(TASKS_KEY).trim(),
-                taskList = JSON.parse(taskListStringified);
+            var taskListStringified = localStorage.getItem(TASKS_KEY).trim();
+            var taskList = JSON.parse(taskListStringified);
 
             var list = [];
 
             taskList = Array.isArray(taskList) ? taskList : [taskList];
 
-            for (var i = 0; i < taskList.length; i++) {
-                var taskObj = new Task().fromJSON(taskList[i]);
-                list.push(taskObj);
-            }
+            $.each(taskList, function(i, task){
+                list.push(new Task().fromJSON(task));
+            });
             TaskLibrary.setTasksCount(list.length);
 
             return list;
@@ -85,12 +84,14 @@ AppScope.TaskLocalStorage = (function(){
     // return task index
     function findTask(taskId){
         var taskList = getAll();
-        for (var i = 0; i < taskList.length; i++) {
-            if (taskId == taskList[i].id) {
-                return i;
+        var index = null;
+        $.each(taskList, function(i, task){
+            if (parseInt(taskId) === task.id) {
+                index = i;
+                return false;
             }
-        }
-        return null;
+        });
+        return index;
     }
 
     // get filter value from LS

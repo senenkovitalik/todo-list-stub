@@ -1,4 +1,4 @@
-var AppScope = window.AppScope ? window.AppScope : {};
+var AppScope = window.AppScope || {};
 
 AppScope.LocationService = (function(){
     // set URL hash value
