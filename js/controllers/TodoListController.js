@@ -115,10 +115,11 @@ AppScope.TodoListController = function () {
             TaskService.uncompleteTasks();
         });
 
-        // complete task
+        // change task status
         oNodes.listContainer.on("change", function (e) {
             var taskContainer = $(e.target).closest("li");
-            TaskService.completeTask(taskContainer);
+            TaskService.changeTaskStatus(taskContainer);
+            TaskService.useFilter();
         });
 
         // show panel with group actions

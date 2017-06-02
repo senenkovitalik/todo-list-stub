@@ -47,10 +47,14 @@ AppScope.TaskService = (function(){
     }
 
     // create task container (HTML element)
-    function createTaskContainer(taskObj){
-        return "<li data-task-id='" + taskObj.id + "' data-task-status='" + taskObj.status.label + "'><div class='well well-sm'>" +
+    function createTaskContainer(otask){
+        var checked = "";
+        // if (otask.status.label = "Completed") {
+        //     checked = "checked";
+        // }
+        return "<li data-task-id='" + otask.id + "' data-task-status='" + otask.status.label + "'><div class='well well-sm'>" +
             "<div class='checkbox no-top-bottom-margin'>" +
-            "<label><input type='checkbox'>" + taskObj.value + "</label>" +
+            "<label><input type='checkbox' " + checked + ">" + otask.value + "</label>" +
             "</div></div></li>";
     }
 
@@ -98,16 +102,24 @@ AppScope.TaskService = (function(){
         showCompleteButton();
     }
 
-    // change task status to completed
-    function completeTask(taskContainer){
+    // change task status
+    function changeTaskStatus(taskContainer){
         var taskId = taskContainer.attr("data-task-id");
+        var status = taskContainer.attr("data-task-status");
+        // var isChecked = taskContainer.find("input").prop("checked");
+        var newStatus;
+
+        if (status === "Active") {
+            newStatus = TaskStatusEnum.COMPLETED_TASK;
+        } else {
+            newStatus = TaskStatusEnum.ACTIVE_TASK;
+        }
         storage.changeTaskAttr(
             taskId,
             "status",
             TaskStatusEnum.COMPLETED_TASK
         );
-        taskContainer.attr("data-task-status", TaskStatusEnum.COMPLETED_TASK.label);
-        useFilter();
+        taskContainer.attr("data-task-status", newStatus.label);
     }
 
     // change tasks status to competed
@@ -139,8 +151,8 @@ AppScope.TaskService = (function(){
     // Remove selected tasks
     function removeTasks(){
         $.each(TaskLibrary.getSelected(), function(index, taskContainer){
-            storage.removeTask(taskContainer.attr("data-task-id"));
-            taskContainer.fadeOut();
+            storage.removeTask($(taskContainer).attr("data-task-id"));
+            $(taskContainer).fadeOut();
         });
         TaskLibrary.clearSelected();
         selectMode = false;
@@ -270,10 +282,10 @@ AppScope.TaskService = (function(){
         getTaskListContent: getTaskListContent,
         selectTask: selectTask,
         selectAllTasks: selectAllTasks,
-        completeTask: completeTask,
         completeTasks: completeTasks,
         uncompleteTasks: uncompleteTasks,
         groupActions: groupActions,
-        useFilter: useFilter
+        useFilter: useFilter,
+        changeTaskStatus: changeTaskStatus
     }
 })();
