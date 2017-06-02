@@ -1,6 +1,7 @@
 var AppScope = window.AppScope || {};
 
-AppScope.TodoListController = function () {
+AppScope.TodoListController = (function () {
+    "use strict";
     var TaskService = AppScope.TaskService;
     var LocationService = AppScope.LocationService;
     var TaskLocalStorage = AppScope.TaskLocalStorage;
@@ -38,7 +39,7 @@ AppScope.TodoListController = function () {
             completeButton: completeButton,
             uncompleteButton: uncompleteButton,
             popover: popover
-        }
+        };
     }
 
     function renderStaticContent() {
@@ -94,7 +95,7 @@ AppScope.TodoListController = function () {
         }
 
         // select one or multiple elements
-        oNodes.listContainer.on("click", function (e) {
+        oNodes.listContainer.on("click", "li", function (e) {
             // prevent select tasks when user click between them
             if ($(e.target).hasClass("list-unstyled")) {
                 return;
@@ -107,12 +108,14 @@ AppScope.TodoListController = function () {
         oNodes.completeButton.click(function (e) {
             e.preventDefault();
             TaskService.completeTasks();
+            TaskService.useFilter();
         });
 
         // uncomplete tasks
         oNodes.uncompleteButton.click(function (e) {
             e.preventDefault();
             TaskService.uncompleteTasks();
+            TaskService.useFilter();
         });
 
         // change task status
@@ -125,7 +128,7 @@ AppScope.TodoListController = function () {
         // show panel with group actions
         oNodes.popover.on("click", function (event) {
             event.preventDefault();
-            $(this).popover({
+            oNodes.popover.popover({
                 content: function () {
                     return TaskService.getPopoverContent();
                 },
@@ -134,10 +137,11 @@ AppScope.TodoListController = function () {
                 placement: "auto left",
                 trigger: "focus"
             });
-            $(this).popover("show");
+            oNodes.popover.popover("show");
         });
     }
 
+    // load and render tasks
     function loadUserTaskList() {
         oNodes.list.append($(TaskService.getTaskListContent()));
         LocationService.setHash("filter=" + TaskLocalStorage.getFilter());
@@ -147,4 +151,4 @@ AppScope.TodoListController = function () {
     return {
         initialize: initialize
     };
-}();
+}());

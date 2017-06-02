@@ -1,18 +1,19 @@
 var AppScope = window.AppScope || {};
 
-AppScope.LocationService = (function(){
+AppScope.LocationService = (function () {
+    "use strict";
     // set URL hash value
-    function setHash(value){
+    function setHash(value) {
         location.hash = value;
     }
 
     // get URL hash value
-    function getHash(){
+    function getHash() {
         return location.hash;
     }
 
     // get filter value from URL hash
-    function getFilterValue(){
+    function getFilterValue() {
         return getHash().substring(8);
     }
 
@@ -20,5 +21,5 @@ AppScope.LocationService = (function(){
         setHash: setHash,
         getHash: getHash,
         getFilterValue: getFilterValue
-    }
-})();
+    };
+}());

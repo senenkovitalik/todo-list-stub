@@ -1,19 +1,19 @@
 var AppScope = window.AppScope || {};
 
-AppScope.TaskLibrary = (function(){
-
+AppScope.TaskLibrary = (function () {
+    "use strict";
     var selectedTasks = [];
     var taskCount = 0;  // task amount in LS
 
     // add task container(HTML element li) that user select to arr
-    function addSelected(task){
+    function addSelected(task) {
         if ($.inArray(task, selectedTasks)) {
             selectedTasks.push(task);
         }
     }
 
     // remove task container(HTML element li) that user deselect from arr
-    function removeSelected(task){
+    function removeSelected(task) {
         var index = $.inArray(task, selectedTasks);
         if (index) {
             selectedTasks.splice(index, 1);
@@ -21,28 +21,28 @@ AppScope.TaskLibrary = (function(){
     }
 
     // clear arr of selected tasks
-    function clearSelected(){
+    function clearSelected() {
         selectedTasks = [];
     }
 
     // get arr of selected tasks
-    function getSelected(){
+    function getSelected() {
         return selectedTasks;
     }
 
     // get task number that user select
-    function getSelectedCount(){
+    function getSelectedCount() {
         return selectedTasks.length;
     }
 
     // set number of tasks loaded from LS
     // may change after add/del tasks
-    function setTasksCount(count){
+    function setTasksCount(count) {
         taskCount = count;
     }
 
     // check if all tasks that was load was select
-    function isAllSelected(){
+    function isAllSelected() {
         return (getSelectedCount() === taskCount);
     }
 
@@ -54,5 +54,5 @@ AppScope.TaskLibrary = (function(){
         getSelectedCount: getSelectedCount,
         setTasksCount: setTasksCount,
         isAllSelected: isAllSelected
-    }
-})();
+    };
+}());
