@@ -26,7 +26,7 @@ AppScope.TodoListController = (function () {
         var modalWindowInput = $("#task-description");
         var modalWindowInputContainer = modalWindowInput.parent();
         var listContainer = $("#list");
-        var list = $("#main-content").find(".list-unstyled");
+        var list = $(".list-unstyled");
         var completeButton = $("#btn-complete");
         var uncompleteButton = $("#btn-uncomplete");
         var popover = $("[data-toggle='popover']");
