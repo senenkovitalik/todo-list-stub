@@ -250,10 +250,19 @@ AppScope.TaskService = (function () {
             break;
         }
 
-        showObj.selectAll = TaskLibrary.isAllSelected()
-            ? hide
-            : "";
+        var len = $(".list-unstyled")
+            .find("li")
+            .filter(function () {
+                return $(this).attr("style") !== "display: none;";
+            }).length;
 
+        if (len === 0) {
+            showObj.selectAll = hide;
+        } else {
+            showObj.selectAll = TaskLibrary.isAllSelected()
+                ? hide
+                : "";
+        }
         if (!selectMode) {
             showObj.deselectAll = hide;
             showObj.removeSelected = hide;
